@@ -104,6 +104,12 @@ Please remove line below in config/environtments/test.rb
 EOS
 
 # ====================
+# git
+# ====================
+
+git :init
+
+# ====================
 # initialize spork, guard
 # ====================
 
