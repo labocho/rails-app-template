@@ -1,0 +1,4 @@
+---
+:include: ^(Rakefile|Gemfile|Capfile|Guardfile|config\.ru|.*\.(rb|erb|haml|yml|js|coffee|css|scss))$
+:exclude: ^(vendor/|public/|.*\.(eml)$)
+:force: false

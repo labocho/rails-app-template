@@ -1,0 +1,9 @@
+<%- attributes.each do |attribute| -%>
+%dl
+  %dt= <%= singular_table_name.capitalize %>.human_attribute_name :<%= attribute.name %>
+  %dd= @<%= singular_table_name %>.<%= attribute.name %>
+<%- end -%>
+
+%a.btn{href: edit_<%= singular_table_name %>_path} Edit
+%a.btn.btn-danger{href: <%= singular_table_name %>_path(@<%= singular_table_name %>), "data-method" => "delete", "data-confirm" => "Are you sure?"} Delete
+%a.btn{href: <%= index_helper %>_path} Back

@@ -1,0 +1,20 @@
+%h1
+  = <%= singular_table_name.capitalize %>.model_name.human
+  .btn-group.pull-right
+    %a.btn{href: new_<%= singular_table_name %>_path} Add
+
+%table.table.table-bordered.table-striped
+  %thead
+    %tr
+      %th= <%= singular_table_name.capitalize %>.human_attribute_name :id
+      <%- attributes.each do |attribute| -%>
+      %th= <%= singular_table_name.capitalize %>.human_attribute_name :<%= attribute.name %>
+      <%- end -%>
+  %tbody
+    - @<%= plural_table_name %>.each do |<%= singular_table_name %>|
+      %tr
+        %td
+          %a{href: <%= singular_table_name %>_path(<%= singular_table_name %>)}= "##{<%= singular_table_name %>.id}"
+        <%- attributes.each do |attribute| -%>
+        %td= <%= singular_table_name %>.<%= attribute.name %>
+        <%- end -%>

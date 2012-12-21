@@ -104,6 +104,13 @@ Please remove line below in config/environtments/test.rb
 EOS
 
 # ====================
+# template
+# ====================
+
+rake "rails:templates:copy"
+directory(template_path + "generators", "lib/generators")
+
+# ====================
 # git
 # ====================
 
