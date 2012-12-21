@@ -129,5 +129,4 @@ git :init
 # initialize spork, guard
 # ====================
 
-run "bundle exec spork --bootstrap" # spec_helper.rb に spork 設定追加
 run "bundle exec guard init spork rspec" # Guardfile 生成
