@@ -96,16 +96,16 @@ RUBY
 # spork でクラスリロードするための設定
 application_multiline <<-RUBY, env: :test
 if Spork.using_spork?
-  config.cache_classes = true
-else
   config.cache_classes = false
+else
+  config.cache_classes = true
 end
 RUBY
 puts <<-EOS
 ============================================================
 Please remove line below in config/environtments/test.rb
 
-    config.cache_classes = false
+    config.cache_classes = true
 
 ============================================================
 EOS
