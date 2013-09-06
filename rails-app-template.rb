@@ -93,23 +93,6 @@ config.generators do |g|
 end
 RUBY
 
-# spork でクラスリロードするための設定
-application_multiline <<-RUBY, env: :test
-if Spork.using_spork?
-  config.cache_classes = false
-else
-  config.cache_classes = true
-end
-RUBY
-puts <<-EOS
-============================================================
-Please remove line below in config/environtments/test.rb
-
-    config.cache_classes = true
-
-============================================================
-EOS
-
 # ====================
 # template
 # ====================
@@ -126,7 +109,7 @@ directory(template_path + "generators", "lib/generators")
 git :init
 
 # ====================
-# initialize spork, guard
+# initialize guard
 # ====================
 
-run "bundle exec guard init spork rspec" # Guardfile 生成
+run "bundle exec guard init rspec" # Guardfile 生成
