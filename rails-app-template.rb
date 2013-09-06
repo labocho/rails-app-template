@@ -14,7 +14,7 @@ gem_group :development, :test do
   gem "debugger"
   gem "rspec-rails"
   gem "guard-rspec"
-  gem "guard-spork"
+  gem "spring"
   gem "rb-fsevent" # Mac で guard 使うのに必要
   gem "growl" # guard から growl に通知
   gem "machinist" # Fixture replacement
