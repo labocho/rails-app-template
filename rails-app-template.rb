@@ -17,7 +17,7 @@ gem_group :development, :test do
   gem "spring"
   gem "rb-fsevent" # Mac で guard 使うのに必要
   gem "growl" # guard から growl に通知
-  gem "machinist" # Fixture replacement
+  gem "factory_girl_rails" # Fixture replacement
   gem "thin" # WEBrick より早く 1.9.3 で安定
 
   gem "turnip" # Cucumber と同じ書式の受け入れテストを rspec で実行
@@ -31,7 +31,6 @@ gem_group :development, :test do
 end
 
 generate "rspec:install"
-generate "machinist:install" # spec/supports/blueprints.rb
 
 # spec_helper.rb を置き換え
 remove_file "spec/spec_helper.rb"
