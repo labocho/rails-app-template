@@ -11,7 +11,7 @@ gem "kaminari"
 gem "rails-i18n"
 
 gem_group :development, :test do
-  gem "debugger"
+  gem "byebug"
   gem "rspec-rails"
   gem "guard-rspec"
   gem "spring"
