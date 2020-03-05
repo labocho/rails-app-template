@@ -10,13 +10,35 @@ template_path = "#{File.dirname(__FILE__)}/templates/"
 gem "haml"
 gem "kaminari"
 gem "rails-i18n"
+gem "draper"
+gem "lograge"
+gem "rack-revision_route", git: "https://github.com/labocho/rack-revision_route.git"
 
 gem_group :development, :test do
   gem "byebug"
   gem "rspec-rails"
-  gem "factory_girl_rails" # Fixture replacement
+  gem "factory_bot_rails"
+  gem "timecop"
   gem "rubocop"
 end
+
+initializer "lograge.rb", File.read(template_path + "lograge.rb")
+append_info_to_payload = <<-RUBY
+  private
+  def append_info_to_payload(payload)
+    super
+    payload[:session_id] = session.id
+    # payload[:user_id] = current_user&.id
+    payload[:remote_ip] = request.remote_ip
+  end
+RUBY
+
+File.write(
+  "app/controllers/application_controller.rb",
+  File.read("app/controllers/application_controller.rb").gsub(/^end\n/, "#{append_info_to_payload}end\n")
+)
+
+initializer "rack-revision_route.rb", File.read(template_path + "rack-revision_route.rb")
 
 run "bundle install"
 generate "rspec:install"
