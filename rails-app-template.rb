@@ -3,26 +3,28 @@ require "open-uri"
 
 template_path = "#{File.dirname(__FILE__)}/templates/"
 
-# ====================
 # Gems
 # ====================
-
 gem "haml"
 gem "kaminari"
 gem "rails-i18n"
-gem "draper"
-gem "lograge"
-gem "rack-revision_route", git: "https://github.com/labocho/rack-revision_route.git"
 
 gem_group :development, :test do
   gem "byebug"
-  gem "rspec-rails"
   gem "factory_bot_rails"
   gem "timecop"
-  gem "rubocop"
 end
 
+# draper
+# --------------------
+gem "draper"
+initializer "draper.rb", File.read(template_path + "draper.rb")
+
+# lograge
+# --------------------
+gem "lograge"
 initializer "lograge.rb", File.read(template_path + "lograge.rb")
+
 append_info_to_payload = <<-RUBY
   private
   def append_info_to_payload(payload)
@@ -38,13 +40,29 @@ File.write(
   File.read("app/controllers/application_controller.rb").gsub(/^end\n/, "#{append_info_to_payload}end\n")
 )
 
+# rack-revision_route
+# --------------------
 initializer "rack-revision_route.rb", File.read(template_path + "rack-revision_route.rb")
+gem "rack-revision_route", git: "https://github.com/labocho/rack-revision_route.git"
+
+# rspec
+# --------------------
+gem_group :development, :test do
+  gem "rspec-rails"
+end
 
 run "bundle install"
 generate "rspec:install"
 
+# rubocop
+# --------------------
+gem_group :development, :test do
+  gem "rubocop"
+end
 file ".rubocop.yml", open("https://gist.githubusercontent.com/labocho/b192ba9393c43d0f0c038c5403697e8f/raw/.rubocop.yml", &:read)
 
+# devise
+# --------------------
 if yes? "Do you use devise?"
   gem "devise"
 
@@ -52,6 +70,8 @@ if yes? "Do you use devise?"
   generate "devise:install"
 end
 
+# carrierwave
+# --------------------
 if yes? "Do you use carrierwave?"
   gem "carrierwave"
   if yes? "mini_magick too?"
@@ -59,6 +79,8 @@ if yes? "Do you use carrierwave?"
   end
 end
 
+# mail
+# --------------------
 if yes? "Do you use mail?"
   gem "action_mailer_config", git: "git://github.com/labocho/action_mailer_config.git" # ActionMailer の設定を mail.yml で
   initializer "action_mailer_config.rb", File.read(template_path + "action_mailer_config.rb")
@@ -74,11 +96,6 @@ end
 
 run "bundle install"
 
-# ====================
-# Logging
-# ====================
-
-# ====================
 # application.rb
 # ====================
 # application メソッドに複数行の文字列渡すとインデントがおかしくなるので調整
@@ -99,15 +116,11 @@ config.generators do |g|
 end
 RUBY
 
-# ====================
 # template
 # ====================
-
 # haml のテンプレートをコピー
 directory(template_path + "generators", "lib/generators")
 
-# ====================
 # git
 # ====================
-
 git :init
