@@ -16,10 +16,13 @@ gem_group :development, :test do
   gem "factory_girl_rails" # Fixture replacement
 end
 
+run "bundle install"
 generate "rspec:install"
 
 if yes? "Do you use devise?"
   gem "devise"
+
+  run "bundle install"
   generate "devise:install"
 end
 
@@ -43,7 +46,7 @@ Please edit config/initializers/exception_notification.rb
 EOS
 end
 
-run "bundle install" # 以下でコマンド実行するため bundle install しておく
+run "bundle install"
 
 # ====================
 # Logging
@@ -74,8 +77,6 @@ RUBY
 # template
 # ====================
 
-# lib/templates 下に rails g で使うテンプレートを展開
-rake "rails:templates:copy"
 # haml のテンプレートをコピー
 directory(template_path + "generators", "lib/generators")
 
