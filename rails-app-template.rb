@@ -1,4 +1,5 @@
 # encoding: UTF-8
+require "open-uri"
 
 template_path = "#{File.dirname(__FILE__)}/templates/"
 
@@ -14,10 +15,13 @@ gem_group :development, :test do
   gem "byebug"
   gem "rspec-rails"
   gem "factory_girl_rails" # Fixture replacement
+  gem "rubocop"
 end
 
 run "bundle install"
 generate "rspec:install"
+
+file ".rubocop.yml", open("https://gist.githubusercontent.com/labocho/b192ba9393c43d0f0c038c5403697e8f/raw/.rubocop.yml", &:read)
 
 if yes? "Do you use devise?"
   gem "devise"
