@@ -59,7 +59,7 @@ generate "rspec:install"
 gem_group :development, :test do
   gem "rubocop"
 end
-file ".rubocop.yml", open("https://gist.githubusercontent.com/labocho/b192ba9393c43d0f0c038c5403697e8f/raw/.rubocop.yml", &:read)
+file ".rubocop.yml", URI.open("https://gist.githubusercontent.com/labocho/b192ba9393c43d0f0c038c5403697e8f/raw/.rubocop.yml", &:read)
 
 # devise
 # --------------------
@@ -82,7 +82,7 @@ end
 # mail
 # --------------------
 if yes? "Do you use mail?"
-  gem "action_mailer_config", git: "git://github.com/labocho/action_mailer_config.git" # ActionMailer の設定を mail.yml で
+  gem "action_mailer_config", git: "https://github.com/labocho/action_mailer_config.git" # ActionMailer の設定を mail.yml で
   initializer "action_mailer_config.rb", File.read(template_path + "action_mailer_config.rb")
 
   gem "exception_notification" # 例外をメールで通知

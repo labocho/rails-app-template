@@ -5,10 +5,10 @@ module Lograge
   def self.filter_uploaded_file(obj)
     case obj
     when Array
-      obj.map{|e| filter_uploaded_file(e) }
+      obj.map {|e| filter_uploaded_file(e) }
     when Hash
-      obj.each_with_object({}) do |(k, v), hash|
-        hash[k] = filter_uploaded_file(v)
+      obj.transform_values do |v|
+        filter_uploaded_file(v)
       end
     when ActionDispatch::Http::UploadedFile
       obj.inspect
