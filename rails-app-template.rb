@@ -1,5 +1,6 @@
 # encoding: UTF-8
 require "open-uri"
+require "fileutils"
 
 template_path = "#{File.dirname(__FILE__)}/templates/"
 
@@ -95,6 +96,41 @@ EOS
 end
 
 run "bundle install"
+
+# Vite
+# ====================
+if yes? "Do you use Vite?"
+  file(
+    "package.json",
+    <<~JSON
+      {
+        "scripts": {
+          "build": "rm -rf public/packs && vue-tsc --noEmit && vite build",
+          "watch": "vite",
+          "tsc-watch": "vue-tsc --noEmit --watch"
+        }
+      }
+    JSON
+  )
+  file "vite.config.js", File.read(template_path + "vite.config.js")
+  file "app/helpers/vite_helper.rb", File.read(template_path + "vite_helper.rb")
+
+  file "app/javascript/packs/application.js", "console.log('Hello, Vite!');"
+  file "app/javascript/images/index.js", "// Please import images not used in other files"
+
+  application "config.use_vite_server = false"
+  environment <<~RUBY, env: "development"
+    # USE_VITE_SERVER=0 bin/rails s で起動すると vite サーバを使わず public/packs を参照する
+    # 事前に yarn run vite build 実行しておく
+    config.use_vite_server = ENV.fetch("USE_VITE_SERVER", "1") == "1"
+  RUBY
+
+  run "yarn add --dev vite @vitejs/plugin-vue typescript vue-tsc sass pug"
+  run "yarn add vue"
+  run "yarn run tsc --init"
+
+  warn "Please edit tsconfig.json: https://zenn.dev/labocho/books/270173d74fcd77/viewer/dcea12"
+end
 
 # application.rb
 # ====================
