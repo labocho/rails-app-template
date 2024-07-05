@@ -15,7 +15,7 @@ export default defineConfig({
     rollupOptions: {
       input: [
         // app/javascript/packs 下にあるファイルを指定
-        "app/javascript/packs/application.js",
+        "app/javascript/packs/application.ts",
         "app/javascript/images/index.js",
       ]
     }

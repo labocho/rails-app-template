@@ -100,6 +100,7 @@ run "bundle install"
 # Vite
 # ====================
 if yes? "Do you use Vite?"
+  # https://zenn.dev/labocho/books/270173d74fcd77
   file(
     "package.json",
     <<~JSON
@@ -115,7 +116,7 @@ if yes? "Do you use Vite?"
   file "vite.config.js", File.read(template_path + "vite.config.js")
   file "app/helpers/vite_helper.rb", File.read(template_path + "vite_helper.rb")
 
-  file "app/javascript/packs/application.js", "console.log('Hello, Vite!');"
+  file "app/javascript/packs/application.ts", "console.log('Hello, Vite!');"
   file "app/javascript/images/index.js", "// Please import images not used in other files"
 
   application "config.use_vite_server = false"
@@ -128,6 +129,14 @@ if yes? "Do you use Vite?"
   run "yarn add --dev vite @vitejs/plugin-vue typescript vue-tsc sass pug"
   run "yarn add vue"
   run "yarn run tsc --init"
+
+  tsconfig = File.read("tsconfig.json")
+  tsconfig.gsub!(%r("module": ".+",), %("module": "es2022",))
+  tsconfig.gsub!(%r(// "types": .+)) {|match| match + %(\n    "types": ["vite/client"], // import.meta.glob を使えるようにする) }
+  tsconfig.gsub!(%r(// "moduleResolution": .+)) {|match| match + %(\n    "moduleResolution": "Node",) }
+  tsconfig.gsub!(%r(// "baseUrl": .+)) {|match| match + %(\n    "baseUrl": "./",) }
+  tsconfig.gsub!(%r(// "paths": .+)) {|match| match + %(\n    "paths": {"~/*": ["app/javascript/*"]}, // import "~/..." を使えるようにする) }
+  File.write("tsconfig.json", tsconfig)
 
   warn "Please edit tsconfig.json: https://zenn.dev/labocho/books/270173d74fcd77/viewer/dcea12"
 end
